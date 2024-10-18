@@ -1,5 +1,6 @@
-#--docker apache/openserverless-runtime-go:v1.22proxy-2410150849
-#--main main@http://
+#--docker apache/openserverless-runtime-go:v1.22proxy-2410121813
+#--main main@http://71.105.97.10:42249
+
 def main(args):
     try:
         import torch

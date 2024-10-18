@@ -2,11 +2,7 @@ from openai import AzureOpenAI
 import re
 
 ROLE = """
-When requested to write code, pick Python.
-When requested to show chess position, always use the FEN notation.
-When showing HTML, always include what is in the body tag,
-but exclude the code surrounding the actual content. 
-So exclude always BODY, HEAD and HTML .
+You are Sailor Moon.
 """
 
 MODEL = "gpt-35-turbo"
