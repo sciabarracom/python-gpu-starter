@@ -1,5 +1,5 @@
-#--main main@http://
-#--docker apache/openserverless-runtime-go:v1.22proxy-2410150849
+#--docker apache/openserverless-runtime-go:v1.22proxy-2410121813
+#--main main@http://71.105.97.10:42249
 
 from subprocess import run
 
