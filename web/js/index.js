@@ -10,15 +10,17 @@ document.addEventListener("DOMContentLoaded", function() {
     .then( (x)  => x.json())
     .then( (data) => {
         console.log(data)
-        let insert = document.getElementById("top-area")
+        let insert = document.getElementById("button-area")
         data.services.forEach(service => {
             const button = document.createElement("button");
+            button.setAttribute("class", "bg-blue-500 text-white font-bold py-2 px-4 rounded");
             button.textContent = service.name;
             button.onclick = function() {
                 let url = base + "api/my/"+service.url
                 chat.postMessage({name: service.name, type: "chat", url: url})
             };
             let = p = document.createElement("span")
+            p.setAttribute("class", "p-2")
             p.appendChild(button);
             insert.appendChild(p);
             console.log("enabled "+service.name)

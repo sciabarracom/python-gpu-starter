@@ -129,3 +129,5 @@ window.addEventListener('message', async function (ev) {
   areaChat.innerHTML = ""
   bot(await invoker.invoke(""))
 })
+
+bot("Welcome. Please select a chat to interact with, clicking on one button on the top area.")

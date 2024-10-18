@@ -2,13 +2,16 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="/css/almond.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/index.css" />
 </head>
 
 <body>
-    <div id="top-area">
-        <h2>MastroGPT</h2>
+    <div id="top-area" class="flex justify-between items-center">
+        <div><a href="/"><img id="logo" src="/img/mastrogpt.png"></a></div>
+        <div id="button-area"></div>
     </div>
     <div id="iframe-container">
         <iframe id="chat" src="/chat.html"></iframe>
