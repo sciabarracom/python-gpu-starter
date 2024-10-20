@@ -1,14 +1,13 @@
-#--docker apache/openserverless-runtime-go:v1.22proxy-2410121813
-#--main main@http://71.105.97.10:42249
+# --kind go:1.22proxy
+# --main main@http://69.159.131.90:35150
 
 def main(args):
+    
+    output = "no torch"
     try:
         import torch
         cuda = torch.cuda.is_available()
-        return {
-            "body": f"Cuda: {cuda}"
-        }
-    except:
-        return {
-            "body": "no torch"
-        }
+        output = f"Cuda: {cuda}"
+    except: pass
+
+    return {"body": {"output": output}}

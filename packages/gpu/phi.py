@@ -1,5 +1,5 @@
-#--docker apache/openserverless-runtime-go:v1.22proxy-2410121813
-#--main main@http://71.105.97.10:42249
+#--kind go:1.22proxy
+#--main main@https://3fbf254a-4e5b-49cd-bdf7-c3296a95576f-skg00018.k8sgpu.net
 #--param hf_token $HUGGINGFACE_HUB_TOKEN
 
 from subprocess import run

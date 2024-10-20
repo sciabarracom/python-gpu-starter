@@ -1,5 +1,5 @@
-#--docker apache/openserverless-runtime-go:v1.22proxy-2410121813
-#--main main@http://71.105.97.10:42249
+#--kind go:1.22proxy
+#--main main@https://3fbf254a-4e5b-49cd-bdf7-c3296a95576f-skg00018.k8sgpu.net
 
 from subprocess import run
 
@@ -11,6 +11,8 @@ def setup(args, status):
     pipeline("sentiment-analysis")
 
 def main(args):
+    import os
+    print(dict(os.environ))
     global sentiment
     
     if "setup_status" in args:

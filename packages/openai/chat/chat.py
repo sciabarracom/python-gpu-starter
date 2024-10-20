@@ -2,7 +2,11 @@ from openai import AzureOpenAI
 import re
 
 ROLE = """
-You are Sailor Moon.
+When requested to write code, use Python.
+When requested to show chess position, always show it using the FEN notation.
+When requested to show  HTML, always include the content of the tag BODY,
+but always exclude the HTML outside the BODY tag and the BODY tag itself.
+Never show BODY, HTML, HEAD, or any other tag outside the BODY tag.
 """
 
 MODEL = "gpt-35-turbo"
@@ -20,18 +24,10 @@ def ask(input):
     return "ERROR"
 
 
-"""
-import re
-from pathlib import Path
-text = Path("util/test/chess.txt").read_text()
-text = Path("util/test/html.txt").read_text()
-text = Path("util/test/code.txt").read_text()
-"""
 def extract(text):
-    res = {}
-    
+    res = {}    
     # search for a chess position
-    pattern = r'(([rnbqkpRNBQKP1-8]{1,8}/){7}[rnbqkpRNBQKP1-8]{1,8} [bw] (-|K?Q?k?q?) (-|[a-h][36]) \d+ \d+)'
+    pattern = r'(([rnbqkpRNBQKP1-8]{1,8}/){7}[rnbqkpRNBQKP1-8]{1,8})'
     m = re.findall(pattern, text, re.DOTALL | re.IGNORECASE)
     #print(m)
     if len(m) > 0:
