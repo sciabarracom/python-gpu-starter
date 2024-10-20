@@ -1,5 +1,6 @@
+#--web true
 #--kind go:1.22proxy
-#--main main@https://3fbf254a-4e5b-49cd-bdf7-c3296a95576f-skg00018.k8sgpu.net
+#--main main@http://69.159.131.90:35150
 
 from subprocess import run
 
@@ -16,19 +17,20 @@ def main(args):
     global sentiment
     
     if "setup_status" in args:
-        res = "\n".join(args['setup_status'])
-        return { "body": res }
-    
+        return {"body": {"output": f"```\n{args['setup_status']}```"}}
+
     try:
+        import torch
+        device = "cuda" if torch.cuda.is_available() else "cpu"
         from transformers import pipeline
-        sentiment = pipeline('sentiment-analysis')
+        sentiment = pipeline('sentiment-analysis', device=device)
 
         input = args.get("input", "")
-        if input == "":
-            return { "body": "please provide some input"}
-        output = sentiment(input)
-        return {
-            "body": output
-        }
+        output = "please provide some input"
+        if input != "":
+            res = sentiment(input)
+            output = res[0]['label']+": "+str(res[0]['score'])
     except:
-        return {"body": "exception"}
+        output = "something went wrong"
+        
+    return {"body": {"output": output}}

@@ -1,45 +1,58 @@
+#--web true
 #--kind go:1.22proxy
-#--main main@https://3fbf254a-4e5b-49cd-bdf7-c3296a95576f-skg00018.k8sgpu.net
+#--main main@http://69.159.131.90:35150
 #--param hf_token $HUGGINGFACE_HUB_TOKEN
 
 from subprocess import run
 
-def login(args, status):
+def login(args):
     from huggingface_hub import login, whoami
     try:
         whoami()
-        status.write("already logged in\n")
         return True
     except:
        try:
           login(token=args.get("hf_token", ""))
-          status.write("logged in\n")
           return True
        except:
-          status.write("cannot log in - did you provide a correct hf_token?\n")
           return False
 
 def setup(args, status):
     from subprocess import run
+    status.write("installing transformers\n")
     run(["pip", "install", "transformers", "--upgrade"])
     status.write("downloading model\n")
     run(["pip", "install", "huggingface_hub"])
-    if login(args, status):
+    if login(args):
+            status.write("logged in huggingface\n")
+            import torch
+            torch.cuda.empty_cache()
             from transformers import pipeline
             pipeline(model="microsoft/phi-1_5", device="cuda")
             pipeline.to("cuda")
-            status.write("logged in\n")
+            status.write("completed\n")
+    else:
+            status.write("cannot log in huggingface\n")
 
 chat = None
 def main(args):
     global chat
-    if "setup_status" in args:
-        return {"body": args['setup_status']}
     
-    from transformers import pipeline
-    if not chat:
-        chat = pipeline(model="microsoft/phi-1_5", device=0)
+    if "setup_status" in args:
+        return {"body": {"output": f"```\n{args['setup_status']}```"}}
+    
+    try:
+        from transformers import pipeline
+        if not chat:
+            import torch
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+            chat = pipeline(model="microsoft/phi-1_5", device=device)
+
+        text = chat(args.get("input", "who are you"), max_new_tokens=50)
+        output = text[0]['generated_text']
+    except Exception as e:
+        output = f"```\n{str(e)}```"
     
     return {
-        "body": chat(args.get("input", "who are you"), max_new_tokens=50)
+        "body": {"output": output}
     }

@@ -12,6 +12,18 @@ def main(arg):
                 "name": "OpenAI",
                 "url": "openai/chat"
             },
+            {
+                "name": "GPU",
+                "url": "gpu/check"
+            },
+            {
+                "name": "Sentiment",
+                "url": "gpu/sentiment"
+            },
+            {
+                "name": "Phi",
+                "url": "gpu/phi"
+            },
         ]
     }
     return {"body": data}

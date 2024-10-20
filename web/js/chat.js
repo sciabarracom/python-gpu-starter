@@ -31,7 +31,7 @@ class Invoker {
     }
     // no url 
     if (this.url == null)
-      return "Welcome, please select the chat application you want to use by clicking a  button on top.";
+      return "Welcome, please select the chat application you want to use by clicking a button on top.";
     // prepare a request
     let json = {
       input: msg
