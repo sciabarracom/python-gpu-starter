@@ -48,8 +48,13 @@ def main(args):
             device = "cuda" if torch.cuda.is_available() else "cpu"
             chat = pipeline(model="microsoft/phi-1_5", device=device)
 
-        text = chat(args.get("input", "who are you"), max_new_tokens=50)
-        output = text[0]['generated_text']
+        output = "please provide some input"
+        input = args.get("input")
+        if input:
+            text = chat(input, max_new_tokens=50)
+            print(text)
+            if len(text) > 0:
+                output = text[0].get('generated_text', output)
     except Exception as e:
         output = f"```\n{str(e)}```"
     
