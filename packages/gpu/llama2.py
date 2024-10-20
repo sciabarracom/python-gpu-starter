@@ -1,9 +1,11 @@
+#--web true
 #--kind go:1.22proxy
 #--main main@http://69.159.131.90:35150
 #--param hf_token $HUGGINGFACE_HUB_TOKEN
-#--web true
 
 from subprocess import run
+
+MODEL="meta-llama/Llama-2-7b-chat-hf"
 
 def login(args):
     from huggingface_hub import login, whoami
@@ -19,20 +21,16 @@ def login(args):
 
 def setup(args, status):
     from subprocess import run
-    status.write("installing transformers\n")
+    status.write("installing libraries\n")
     run(["pip", "install", "transformers", "--upgrade"])
-    status.write("downloading model\n")
     run(["pip", "install", "huggingface_hub"])
     if login(args):
-            status.write("logged in huggingface\n")
-            import torch
-            torch.cuda.empty_cache()
+            status.write("downloading model\n")
             from transformers import pipeline
-            pipeline(model="microsoft/phi-1_5", device="cuda")
-            pipeline.to("cuda")
+            pipeline(model=MODEL)
             status.write("completed\n")
     else:
-            status.write("cannot log in huggingface\n")
+            status.write("cannot login hugging face\n")
 
 chat = None
 def main(args):
@@ -46,10 +44,9 @@ def main(args):
         if not chat:
             import torch
             device = "cuda" if torch.cuda.is_available() else "cpu"
-            chat = pipeline(model="microsoft/phi-1_5", device=device)
+            chat = pipeline(model=MODEL, device=device)
 
-        text = chat(args.get("input", "who are you"), max_new_tokens=50)
-        output = text[0]['generated_text']
+        output = chat(args.get("input", "who are you"), max_new_tokens=50)
     except Exception as e:
         output = f"```\n{str(e)}```"
     
